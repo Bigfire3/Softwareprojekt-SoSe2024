@@ -16,16 +16,17 @@ Tutorial Script:
 n. "Do not collide"  Falls Spieler stirbt
 
 Inszenierung:
-1.	Fade in zu weißem Bildschirm mit dem schwarzen Ball. Hand/Finger/Pfeil auf den Ball mit dem Text  „You play this ball“
+1.	Fade in zu weißem Bildschirm mit dem schwarzen Ball. Hand/Finger/Pfeil auf den Ball mit der ersten Nachricht
 2.	Durch Tippen kommt der nächste Text. Vielleicht durch tippen Symbol darstellen damit der Spieler weiß wie er weiter kommt.
-3. Text erscheint „Don’t touch the floor, or you‘ll die“
-4.	Boden schiebt sich vom unteren Bildschirmrand los. Zeit bleibt stehen ( vielleicht pause Symbol oben in der Ecke oder eine „Freeze“ Symbol) Der spieler wird aufgefordert den Bildschirm anzutippen um die Zeit zu verlangsamen. „Tap and hold the screen to slow down time“ sobald er den Bildschirm berührt geht das Spiel weiter aber verlangsamt.
-5.	Time freeze und die Nachricht „Drag to aim“. Bei erfolgreichem durchführen wird die Ziellinie gezeigt.
-6.	Nach 2 Sekunden Zielen kommt der nächste Prompt „Let go and do 3 more swipes“ Spiler führt ersten “Swipe“ durch und wird darauf hinewiesen sich für den nächsten Jump bereit zu machen. Eventuell langsamer als normal um einstieg leichter zu machen
-7.	Nach 3-4 freien Sprüngen kommt das erste Hinderniss und damit ein Freeze. „Don’t collide with the obstacles“ wird angezeigt und der Spieler muss ausweichen.
-8.	Nach weiteren 4-5 sprüngen kommt das erste Power Up und damit ein Freeze. „Collect gadgets which will help you“ wird angezeigt und wenn Spieler es einsammelt, bekommt er einen Boost
-12.	Spieler verlieren lassen durch zu viele Hindernisse oder ähnliches und dann die Nachricht „You’ll get 2 lives each try” zeigen wenn er stirbt
-13.	Das Spiel geht in den in game Start screen zurück ist aber gefreezed und die Nachricht „The higher you get the higher is your score“ erscheint.
-14.	Nach tippen erscheint die nächste Nachricht „Maybe there are things to unlock?“ 
-15.	Nach erneutem Tippen erscheint die Nachricht „Beat your Highscore and find out” // vielleicht auch “Beat the Highscore and find out” und einen vom Spiel gesetzten Highscore festlegen, welcher den ersten Unlock freischaltet// 
+3.  Die zweite Nachricht erscheint, bei welcher der Spieler vor der Zone gewarnt wird.
+4.	Boden schiebt sich vom unteren Bildschirmrand los. Zeit bleibt stehen ( vielleicht pause Symbol oben in der Ecke oder eine „Freeze“ Symbol) Der spieler wird aufgefordert den Bildschirm anzutippen um die Zeit zu verlangsamen. sobald er den Bildschirm berührt geht das Spiel weiter aber verlangsamt.
+5.	Time freeze und in einer Nachricht wird der Spieler zum aimen aufgefordert. Bei erfolgreichem durchführen wird die Ziellinie gezeigt.
+6.	Nach 2 Sekunden Zielen kommt der nächste Prompt. Spieler führt ersten “Swipe“ durch und wird darauf hingewiesen sich für den nächsten Jump bereit zu machen. Eventuell langsamer als normal um einstieg leichter zu machen
+7.	Nach 3-4 freien Sprüngen kommt das erste Hinderniss und damit ein Freeze. Dem Spieler wird gesagt er muss den Hindernissen ausweichen und der Spieler muss ausweichen.
+8.	Nach weiteren 4-5 sprüngen kommt das erste Power Up und damit ein Freeze. Der Spieler wird auf die Gadgets hingewiesen und wenn Spieler es einsammelt, bekommt er einen Boost
+12.	Spieler verlieren lassen durch zu viele Hindernisse oder ähnliches um in einer Nachricht zu erklären, dass man 2 Leben pro versuch hat.
+13.	Das Spiel geht in den in game Start screen zurück ist aber gefreezed und die Highscore Mechanik wird erklärt erscheint.
+14.	Nach tippen erscheint die nächste Nachricht in der Spannung aufgebaut wird. 
+15.	Nach erneutem Tippen erscheint die letzte Nachricht in der der Spieler aufgefordert wird den Highscore zu knacken.
+    einen vom Spiel gesetzten Highscore festlegen, welcher den ersten Unlock freischaltet 
 16.	Pause endet bei erneutem tippen und Countdown startet. 3. 2. 1. „Swipe“
