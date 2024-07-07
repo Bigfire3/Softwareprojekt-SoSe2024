@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,37 +6,38 @@ public class TutorialManager : MonoBehaviour
 {
     public GameObject instructionPanelObject;
     public GameObject playerObject;
+    PlayerManagerTutorial playerManager;
     TypeWriting typeWriter;
     public Animation intructionAnimator;
 
-    enum State
+    public enum State
     {
+        start,
         text_0,
-        waitForText_0,
-        playerFadeIn,
+        touch_0,
+        text_1,
+        touch_1
     }
-    State state;
+    static public State state = State.start;
 
-    public GameObject enemyObject;
     void Start()
     {
+        playerManager = playerObject.GetComponent<PlayerManagerTutorial>();
         typeWriter = GetComponent<TypeWriting>();
         typeWriter.OnTextTyped += OnTextTyped;
 
         StartCoroutine(TutorialStart());
-        
-        enemyObject.transform.localScale = new Vector2(0, 0);
     }
     void Update()
     {
         switch (state)
         {
-            case State.text_0:
+            case State.touch_0:
                 
                 break;
             
-            case State.playerFadeIn:
-                
+            case State.touch_1:
+                Debug.Log("touch_1");
                 break;
         }
     }
@@ -50,13 +50,14 @@ public class TutorialManager : MonoBehaviour
     {
         instructionPanelObject.LeanMoveLocalY(-1170, 1).setEaseOutElastic();
         yield return new WaitForSeconds(1);
-        typeWriter.startTypingText("You play this ball", true);
+        typeWriter.startTypingText("You play this ball", mute: true, invokeEvent: false);
         yield return new WaitForSeconds(2);
         playerObject.SetActive(true);
         yield return new WaitForSeconds(1);
         intructionAnimator.gameObject.SetActive(true);
         intructionAnimator.Play("FingerDrag_0");
-        typeWriter.startTypingText("Tap and drag to aim", true);
+        typeWriter.startTypingText("Tap and drag to aim", mute: true, invokeEvent: false);
+        state = State.text_0;
     }
 
     public void OnCancelButtonPress()
