@@ -6,6 +6,8 @@ public class TutorialManager : MonoBehaviour
 {
     public GameObject instructionPanelObject;
     public GameObject playerObject;
+    public GameObject enemyPrefab;
+    public GameObject rotateStarPrefab;
     PlayerManagerTutorial playerManager;
     TypeWriting typeWriter;
     public Animation intructionAnimation;
@@ -17,7 +19,9 @@ public class TutorialManager : MonoBehaviour
         waitForAim_0,
         waitForTouchEnd_0,
         waitForMoreJumps,
-        waitForPassObstacles,
+        waitForPassObstacle_0,
+        waitForPassObstacle_1,
+        waitForCollectGadget_0,
         text_1,
         touch_1
     }
@@ -40,7 +44,7 @@ public class TutorialManager : MonoBehaviour
                     doInTouchPhaseAim: () =>
                     {
                         typeWriter.StartTypingText("Perfectly\nNow let go to jump");
-                        state = State.waitForTouchEnd_0;
+                        state++;
                     });
                 break;
             
@@ -57,15 +61,39 @@ public class TutorialManager : MonoBehaviour
                 {
                     jumpsDone++;
                 });
-                if (jumpsDone > 2)
+                if (jumpsDone > 1)
                 {
-                    typeWriter.StartTypingText("Don't collide with the obstacles");
+                    typeWriter.StartTypingText("Pass the obstacles");
                     state++;
                 }
                 break;
-            case State.waitForPassObstacles:
-                Debug.Log("Spawn enemies");
-                playerManager.TouchMethod();
+            case State.waitForPassObstacle_0:
+                playerManager.TouchMethod(doInTouchPhaseEndedWithVelocity: () =>
+                {
+                    GameObject enemyObject = Instantiate(enemyPrefab, new Vector2(Random.Range(-2.0f, 2.0f), playerObject.transform.position.y + 7), Quaternion.identity);
+                    Destroy(enemyObject.GetComponent<Enemy>());
+                    jumpsDone++;
+                });
+                if (jumpsDone > 2) state++;
+                break;
+            case State.waitForPassObstacle_1:
+                playerManager.TouchMethod(doInTouchPhaseEndedWithVelocity: () =>
+                {
+                    Instantiate(rotateStarPrefab, new Vector2(Random.Range(-2.0f, 2.0f), playerObject.transform.position.y + 7), Quaternion.identity);
+                    jumpsDone++;
+                });
+                if (jumpsDone > 3)
+                {
+                    typeWriter.StartTypingText("Collect the gadget");
+                    state++;
+                }
+                break;
+            case State.waitForCollectGadget_0:
+                playerManager.TouchMethod(doInTouchPhaseEndedWithVelocity: () =>
+                {
+                    Instantiate(rotateStarPrefab, new Vector2(Random.Range(-2.0f, 2.0f), playerObject.transform.position.y + 7), Quaternion.identity);
+                    jumpsDone++;
+                });
                 break;
         }
     }
