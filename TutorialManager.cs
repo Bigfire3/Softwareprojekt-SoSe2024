@@ -7,7 +7,9 @@ public class TutorialManager : MonoBehaviour
     public GameObject instructionPanelObject;
     public GameObject playerObject;
     public GameObject enemyPrefab;
+    public GameObject flyPrefab;
     public GameObject rotateStarPrefab;
+    public GameObject boostPrefab;
     PlayerManagerTutorial playerManager;
     TypeWriting typeWriter;
     public Animation intructionAnimation;
@@ -19,9 +21,10 @@ public class TutorialManager : MonoBehaviour
         waitForAim_0,
         waitForTouchEnd_0,
         waitForMoreJumps,
-        waitForPassObstacle_0,
-        waitForPassObstacle_1,
-        waitForCollectGadget_0,
+        waitForPassEnemy,
+        waitForPassFly,
+        waitForCollectBoost,
+        boost,
         text_1,
         touch_1
     }
@@ -67,33 +70,34 @@ public class TutorialManager : MonoBehaviour
                     state++;
                 }
                 break;
-            case State.waitForPassObstacle_0:
+            case State.waitForPassEnemy:
                 playerManager.TouchMethod(doInTouchPhaseEndedWithVelocity: () =>
                 {
                     GameObject enemyObject = Instantiate(enemyPrefab, new Vector2(Random.Range(-2.0f, 2.0f), playerObject.transform.position.y + 7), Quaternion.identity);
                     Destroy(enemyObject.GetComponent<Enemy>());
                     jumpsDone++;
                 });
-                if (jumpsDone > 2) state++;
-                break;
-            case State.waitForPassObstacle_1:
-                playerManager.TouchMethod(doInTouchPhaseEndedWithVelocity: () =>
+                if (jumpsDone > 2)
                 {
-                    Instantiate(rotateStarPrefab, new Vector2(Random.Range(-2.0f, 2.0f), playerObject.transform.position.y + 7), Quaternion.identity);
-                    jumpsDone++;
-                });
-                if (jumpsDone > 3)
-                {
-                    typeWriter.StartTypingText("Collect the gadget");
+                    Instantiate(flyPrefab, new Vector2(Random.Range(-1.2f, 1.2f), playerObject.transform.position.y + 7), Quaternion.identity);
+                    this.Invoke(() => { Instantiate(rotateStarPrefab, new Vector2(Random.Range(-2f, 2f), playerObject.transform.position.y + 7), Quaternion.identity); }, 3f);                                 
                     state++;
                 }
                 break;
-            case State.waitForCollectGadget_0:
-                playerManager.TouchMethod(doInTouchPhaseEndedWithVelocity: () =>
+            case State.waitForPassFly:
+                playerManager.TouchMethod();
+                if (GameObject.Find("Fly(Clone)") == null)
                 {
-                    Instantiate(rotateStarPrefab, new Vector2(Random.Range(-2.0f, 2.0f), playerObject.transform.position.y + 7), Quaternion.identity);
-                    jumpsDone++;
-                });
+                    Instantiate(boostPrefab, new Vector2(Random.Range(-1.2f, 1.2f), playerObject.transform.position.y + 9), Quaternion.identity);
+                    typeWriter.StartTypingText("Collect the boost");
+                    state++;
+                }
+                break;
+            case State.waitForCollectBoost:
+                playerManager.TouchMethod(); 
+                break;
+            case State.boost:
+                // wait for playerPhase.normal
                 break;
         }
     }
