@@ -25,6 +25,7 @@ public class TutorialManager : MonoBehaviour
         waitForPassFly,
         waitForCollectBoost,
         boost,
+        idle,
         text_1,
         touch_1
     }
@@ -32,9 +33,10 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
+        BoostScript.OnBoostCollect += IncreaseState;
         playerManager = playerObject.GetComponent<PlayerManagerTutorial>();
         typeWriter = GetComponent<TypeWriting>();
-        //typeWriter.OnTextTyped += OnTextTyped;
+        //typeWriter.OnTextTyped += IncreaseState;
 
         StartCoroutine(TutorialStart());
     }
@@ -94,14 +96,17 @@ public class TutorialManager : MonoBehaviour
                 }
                 break;
             case State.waitForCollectBoost:
-                playerManager.TouchMethod(); 
+                playerManager.TouchMethod();
                 break;
             case State.boost:
-                // wait for playerPhase.normal
+                playerManager.BoostMethod();
+                break;
+            case State.idle:
+                playerManager.TouchMethod();
                 break;
         }
     }
-    void OnTextTyped()
+    void IncreaseState()
     {
         state++;
     }
