@@ -10,6 +10,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject flyPrefab;
     public GameObject rotateStarPrefab;
     public GameObject boostPrefab;
+    public GameObject zoneObject;
     PlayerManagerTutorial playerManager;
     TypeWriting typeWriter;
     public Animation intructionAnimation;
@@ -18,25 +19,35 @@ public class TutorialManager : MonoBehaviour
     public enum State
     {
         start, // intro IEnumerator
-        waitForAim_0,
+        waitForAim,
         waitForTouchEnd_0,
         waitForMoreJumps,
         waitForPassEnemy,
         waitForPassFly,
         waitForCollectBoost,
-        boost,
-        idle,
-        text_1,
-        touch_1
+        waitForBoostEnd,
+        doInBoostEnd,
+        waitForZoneText,
+        startScoreText,
+        waitForScoreText,
+        speedUpZone,
+        doOnZoneFullScreen,
+        waitForChanceText,
+        startEndText,
+        waitForEndText,
+        end,
+        playerDeath
     }
     static public State state = State.start;
 
     void Start()
     {
-        BoostScript.OnBoostCollect += IncreaseState;
         playerManager = playerObject.GetComponent<PlayerManagerTutorial>();
         typeWriter = GetComponent<TypeWriting>();
-        //typeWriter.OnTextTyped += IncreaseState;
+
+        BoostScript.OnBoostCollect += IncreaseState;
+        ZoneTutorial.OnZoneFullScreen += IncreaseState;
+        playerManager.OnPlayerDeath += HandleOnPlayerDeath;
 
         StartCoroutine(TutorialStart());
     }
@@ -44,7 +55,7 @@ public class TutorialManager : MonoBehaviour
     {
         switch (state)
         {
-            case State.waitForAim_0:
+            case State.waitForAim:
                 playerManager.TouchMethod(
                     doInTouchPhaseAim: () =>
                     {
@@ -56,8 +67,10 @@ public class TutorialManager : MonoBehaviour
             case State.waitForTouchEnd_0:
                 playerManager.TouchMethod(doInTouchPhaseEndedWithVelocity: () =>
                 {
-                    typeWriter.StartTypingText("Do more Jumps");
+                    typeWriter.StartTypingText("Repeat");
                     intructionAnimation.gameObject.SetActive(false);
+                    zoneObject.SetActive(true);
+                    zoneObject.GetComponent<ZoneTutorial>().speed = 0;
                     state++;
                 });
                 break;
@@ -75,8 +88,7 @@ public class TutorialManager : MonoBehaviour
             case State.waitForPassEnemy:
                 playerManager.TouchMethod(doInTouchPhaseEndedWithVelocity: () =>
                 {
-                    GameObject enemyObject = Instantiate(enemyPrefab, new Vector2(Random.Range(-2.0f, 2.0f), playerObject.transform.position.y + 7), Quaternion.identity);
-                    Destroy(enemyObject.GetComponent<Enemy>());
+                    InstantiateEnemy(new Vector2(Random.Range(-2.0f, 2.0f), playerObject.transform.position.y + 7));
                     jumpsDone++;
                 });
                 if (jumpsDone > 2)
@@ -90,20 +102,62 @@ public class TutorialManager : MonoBehaviour
                 playerManager.TouchMethod();
                 if (GameObject.Find("Fly(Clone)") == null)
                 {
-                    Instantiate(boostPrefab, new Vector2(Random.Range(-1.2f, 1.2f), playerObject.transform.position.y + 9), Quaternion.identity);
                     typeWriter.StartTypingText("Collect the boost");
+                    Instantiate(boostPrefab, new Vector2(0, playerObject.transform.position.y + 9), Quaternion.identity);
+                    InstantiateEnemy(new Vector2(1.5f, playerObject.transform.position.y + 20));
                     state++;
                 }
                 break;
             case State.waitForCollectBoost:
                 playerManager.TouchMethod();
                 break;
-            case State.boost:
+            case State.waitForBoostEnd:
                 playerManager.BoostMethod();
                 break;
-            case State.idle:
+            case State.doInBoostEnd:
+                zoneObject.GetComponent<ZoneTutorial>().speed = 2.5f;
+                state++;
+                break;
+            case State.waitForZoneText:
+                playerManager.TouchMethod(doInTouchPhaseEndedWithVelocity: () => { state++; });
+                break;
+            case State.startScoreText:
+                typeWriter.OnTextTyped += IncreaseState;
+                typeWriter.StartTypingText("The higher you get the higher is your score");
+                state++;
+                break;
+            case State.waitForScoreText:
                 playerManager.TouchMethod();
                 break;
+            case State.speedUpZone:
+                zoneObject.GetComponent<ZoneTutorial>().speed += 8 * Time.deltaTime;
+                playerManager.TouchMethod();
+                break;
+            case State.doOnZoneFullScreen:
+                typeWriter.StartTypingText("You always have a second chance", delay: 1);
+                state++;
+                break;
+            case State.waitForChanceText:
+                break;
+            case State.startEndText:
+                typeWriter.OnTextTyped -= IncreaseState;
+                typeWriter.StartTypingText("Good luck!\n(Tap)");
+                state++;
+                break;
+            case State.waitForEndText:
+                playerManager.TouchMethod(doInTouchPhaseBegan: () => {
+                    typeWriter.textObject.transform.LeanMoveLocalX(-1200, 0.7f).setEaseInBack().setOnComplete(() => {
+                        PlayerPrefs.SetInt("TutorialDone", 1);
+                        SceneManager.LoadScene(0);
+                    });
+                    state++; });
+                break;
+            case State.end:
+                break;
+
+            case State.playerDeath:
+                break;
+            
         }
     }
     void IncreaseState()
@@ -122,12 +176,23 @@ public class TutorialManager : MonoBehaviour
         intructionAnimation.gameObject.SetActive(true);
         intructionAnimation.Play("FingerDrag_0");
         typeWriter.StartTypingText("Tap and drag to aim", mute: true);
-        state = State.waitForAim_0;
+        state = State.waitForAim;
     }
 
     public void OnCancelButtonPress()
     {
         SceneManager.LoadScene(1);
     }
-    // falls Tutorial completed successfully PlayerPrefs.SetInt("TutorialDone", 1);
+    void InstantiateEnemy(Vector2 position)
+    {
+        GameObject enemyObject = Instantiate(enemyPrefab, position, Quaternion.identity);
+        Destroy(enemyObject.GetComponent<Enemy>());
+    }
+    void HandleOnPlayerDeath()
+    {
+        typeWriter.OnTextTyped -= IncreaseState;
+        ZoneTutorial.OnZoneFullScreen -= IncreaseState;
+        typeWriter.StartTypingText("Do not collide");
+        Debug.Log("Player die.");
+    }
 }
