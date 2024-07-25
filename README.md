@@ -38,15 +38,15 @@ Das Tutorial für unser Handyspiel "Swipe" ist darauf ausgelegt, den Spieler int
 Der TutorialManager ist grundlegend eine State-Maschine, welche die verschiedenen Schritte des Tutorials durchläuft. Alle Schritte sind in einer Enumeration-Variable aufgeführt. Eine Switch-Anweisung in der Main Loop (in Unity "Update()" genannt) führt den Codeblock für die aktuelle Stufe aus. Wird eine Stufe aus irgendeinem Grund für erledigt markiert, schaltet die Switch in den nächsten Anweisungsblock. Ein Grund kann beispielsweise das Auslösen eines Events in einem anderen Script sein oder die Abarbeitung der aktuellen Stufe.
 Ein oft verwendetes Programmierkonzept ist die Nutzung von Delegates, welche es einfach gesagt Funktionen erlaubt, Methoden als Parameter anzunehmen. Somit kann beispielsweise unterschiedlicher Code in den Abschnitten TouchBegin, TouchMoved oder TouchEnd ausgeführt werden.
 
-Wie bereitserwähnt, hört der TutorialManager auf einige Events von anderen Objekten. Beispielsweise gibt es eine HandleOnPlayerDeath-Methode, welche definiert, was passieren soll, wenn der Spieler stirbt.
+Wie bereits erwähnt, subscribet der TutorialManager einige Events von anderen Objekten. Beispielsweise gibt es eine HandleOnPlayerDeath-Invoke, welcher definiert, was passieren soll, wenn der Spieler stirbt.
 
-Wenn das Tutorial erfolgreich absolviert worden ist, wird im Speicher des Handys mittels PlayerPrefs eine Variable gesetzt, welche den erneuten Start des Tutorials verhindert. Schließlich soll das Tutorial nur bei erstmaligem Spielstart druchlaufen werden müssen. Trotzdem lässt es sich aus dem Main-Menu des Spiels erneut öffnen.
+Wenn das Tutorial erfolgreich absolviert worden ist, wird im Speicher des Handys mittels PlayerPrefs eine Variable gesetzt, welche den erneuten Start des Tutorials verhindert. Schließlich soll das Tutorial nur bei erstmaligem Spielstart druchlaufen werden. Trotzdem lässt es sich aus dem Main-Menu des Spiels erneut öffnen.
 
 Wie das Spiel nach dem Softwaresprint aussieht: [YouTube Short](https://www.youtube.com/shorts/Km4xLfjPZ-I)
 (wurde von "DragBall" in "Swipe" umbenannt)
 
 ## Was noch nicht funktioniert
 
-Einige Sonderfälle haben wir bis zum heutigen Stand noch nicht berücksichtigt. Beispielsweise wenn der Spieler den Boost nicht einsammelt oder die App unterbrochen wird. Außerdem funktioniert das zurücksetzen auf eine bestimmte State noch nicht, falls der Spieler stirbt. Dadurch, dass jede Stufe ein gewisses Setup der Scene voraussetzt, welches individuell für jede Stufe wieder hergestellt werden muss, wird aktuell die Scene nur angehalten.
+Einige Sonderfälle haben wir bis zum heutigen Stand noch nicht berücksichtigt. Beispielsweise wenn der Spieler den Boost nicht einsammelt oder die App unterbrochen wird. Außerdem funktioniert das zurücksetzen auf eine bestimmte State noch nicht, falls der Spieler stirbt. Dadurch, dass jede Stufe ein gewisses Setup der Scene voraussetzt, welches individuell für jede Stufe wieder hergestellt werden muss, wird die Scene aktuell nur angehalten.
 
 In naher Zukunft soll das Update Swipe v3.0 in App- und PlayStore veröffentlicht werden. Bis das geschehen kann, muss das Tutorial vollständig sein sowie einige Bugs im Spiel behoben werden. Außerdem möchten wir IAP (In-App-Purchases) anbieten, da im letzten Monat ein Skinsystem inklusive Freischaltungssystem implementiert wurde.
