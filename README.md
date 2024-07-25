@@ -13,9 +13,9 @@ Das Tutorial für unser Handyspiel "Swipe" ist darauf ausgelegt, den Spieler int
 
 ## Ablauf des Tutorials
 
-start,
-waitForAim,
-waitForTouchEnd_0,
+- start,
+- waitForAim,
+- waitForTouchEnd_0,
 waitForMoreJumps,
 waitForPassEnemy,
 waitForPassFly,
