@@ -8,7 +8,8 @@ Dieses Repository entsteht im Rahmen der Veranstaltung "Softwareentwicklung" im 
 
 Dokumentation:
 Zu Beginn der Projektarbeit haben wir uns getroffen um unser weiteres Vorgehen zu besprechen und die Aufgaben aufgeteilt.
-Daraufhin wurde ein erster Entwurf für das Script entworfen, welcher jedoch noch einmal überarbeitet werden musste, da er nicht ausführlich genug war. Nach erneute übersicht durch beide Personen haben wir das Script als fertig angesehen und sind zu den nächsten Schritten übergegangen.
+Daraufhin wurde ein erster Entwurf für das Script entworfen, welcher jedoch noch einmal überarbeitet werden musste, da er nicht ausführlich genug war. Nach erneute übersicht durch beide Personen haben wir das Script als fertig angesehen und sind zu den nächsten Schritten übergegangen. Es erfolgte eine grobe Aufteilung in die Planung und das entwickeln des Codes, mit reger gegenseitiger Absprache BEI Fragen, Ideen und Anregungen.
+
 Das Tutorial für unser Handyspiel "Swipe" ist darauf ausgelegt, den Spieler interaktiv und Schritt-für-Schritt in die Spielmechanik einzuführen. Es werden dem Spieler konkrete Anweisungen gegeben, welche von einem Script überwacht und auf Vollständigkeit überprüft werden. Falls eine Aufgabe absolviert wird, schaltet das Script in die nächste Stufe. Bei fehlerhafter Ausführung wird das Tutorial zurückgesetzt und der Spieler muss das Tutorial erneut beginnen. Es ist uns noch nicht gelungen, nur die aktuelle Stufe zurückzusetzen, da jede Stufe ein gewisses Setup der Scene vorraussetzt, welches individuell für jede Stufe wieder hergestellt werden müsste. Die Entwicklung der Datei TutorialManager.cs ist in diesem Repository dokumentiert. Sie steuert und koordiniert die gesamte Scene. Der TutorialManager steht mit vielen anderen Scripts der Scene in Verbindung, wie zum Beispiel dem PlayerManager.
 
 Ablauf des Tutorials
